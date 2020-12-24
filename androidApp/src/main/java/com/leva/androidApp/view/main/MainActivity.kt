@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     launchesRvAdapter.launchEntities = res.data
                     launchesRvAdapter.notifyDataSetChanged()
                 }
-                is Error -> {
+                is Result.Error -> {
                     progressBarView.isVisible = false
                     Toast.makeText(this@MainActivity, res.message, Toast.LENGTH_SHORT).show()
                 }
