@@ -48,8 +48,6 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
-                implementation("org.kodein.di:kodein-di:7.1.0")
-                implementation("org.kodein.di:kodein-di-jvm:7.1.0")
 
             }
         }
