@@ -53,36 +53,12 @@ extension ContentView {
             usecase.setForceReload(v: forceReload)
             usecase.execute { (result, error) in
                 if (result?.status == Status.successful) {
-                    self.launches = .result((result?.data)!)
+                    self.launches = .result(((result!.data as? [RocketLaunch])!))
                 } else {
-                    self.launches = .error(error?.localizedDescription ?? "error")
+                    self.launches = .error(result?.errorMessage ?? "error")
                 }
                 
             }
-            
-//            when (res) {
-//                is Result.Success -> {
-//                    progressBarView.isVisible = false
-//                    launchesRvAdapter.launchEntities = res.data
-//                    launchesRvAdapter.notifyDataSetChanged()
-//                }
-//                is Result.Error -> {
-//                    progressBarView.isVisible = false
-//                    Toast.makeText(this@MainActivity, res.message, Toast.LENGTH_SHORT).show()
-//                }
-//                else -> {
-//                    progressBarView.isVisible = true
-//                }
-//            }
-            
-            
-//            sdk.getLaunches(forceReload: forceReload, completionHandler: { launches, error in
-//                if let launches = launches {
-//                    self.launches = .result(launches)
-//                } else {
-//                    self.launches = .error(error?.localizedDescription ?? "error")
-//                }
-//            })
         }
     }
 }

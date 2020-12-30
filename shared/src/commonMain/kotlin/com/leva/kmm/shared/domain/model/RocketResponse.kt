@@ -1,8 +1,8 @@
 package com.leva.kmm.shared.domain.model
 
-data class Response(
+data class Response<Data>(
     var status: Status,
-    var data: List<RocketLaunch>? = null,
+    var data: Data? = null,
     var errorMessage: String? = null
 )
 

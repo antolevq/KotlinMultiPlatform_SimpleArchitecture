@@ -15,7 +15,7 @@ class GetRocketListUseCase(
         forceReload = v
     }
 
-    suspend fun execute(): Response {
+    suspend fun execute(): Response<List<RocketLaunch>> {
         try {
             val cachedLaunches = rRepository.getAllCachedLaunches()
             return if (cachedLaunches.isNotEmpty() && !forceReload) {
