@@ -6,11 +6,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    let sdk = SpaceXSDK(databaseDriverFactory: DatabaseDriverFactory())
+    
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
-        let contentView = ContentView(viewModel: .init(sdk: sdk))
+        let contentView = ContentView(viewModel: .init())
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

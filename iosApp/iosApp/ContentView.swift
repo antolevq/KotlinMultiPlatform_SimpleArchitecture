@@ -3,6 +3,8 @@ import shared
 
 struct ContentView: View {
   @ObservedObject private(set) var viewModel: ViewModel
+    
+    
 
     var body: some View {
         NavigationView {
@@ -10,7 +12,7 @@ struct ContentView: View {
             .navigationBarTitle("SpaceX Launches")
             .navigationBarItems(trailing:
                 Button("Reload") {
-                    self.viewModel.loadLaunches(forceReload: true)
+                    self.viewModel.loadLaunches( forceReload: true)
             })
         }
     }
@@ -38,23 +40,49 @@ extension ContentView {
     }
 
     class ViewModel: ObservableObject {
-        let sdk: SpaceXSDK
         @Published var launches = LoadableLaunches.loading
+        
+        let usecase = GetRocketListUseCase(rRepository: RocketRespository(databaseDriverFactory: DatabaseDriverFactory()), forceReload: true)
 
-        init(sdk: SpaceXSDK) {
-            self.sdk = sdk
+        init() {
             self.loadLaunches(forceReload: false)
         }
 
         func loadLaunches(forceReload: Bool) {
             self.launches = .loading
-            sdk.getLaunches(forceReload: forceReload, completionHandler: { launches, error in
-                if let launches = launches {
-                    self.launches = .result(launches)
+            usecase.setForceReload(v: forceReload)
+            usecase.execute { (result, error) in
+                if (result?.status == Status.successful) {
+                    self.launches = .result((result?.data)!)
                 } else {
                     self.launches = .error(error?.localizedDescription ?? "error")
                 }
-            })
+                
+            }
+            
+//            when (res) {
+//                is Result.Success -> {
+//                    progressBarView.isVisible = false
+//                    launchesRvAdapter.launchEntities = res.data
+//                    launchesRvAdapter.notifyDataSetChanged()
+//                }
+//                is Result.Error -> {
+//                    progressBarView.isVisible = false
+//                    Toast.makeText(this@MainActivity, res.message, Toast.LENGTH_SHORT).show()
+//                }
+//                else -> {
+//                    progressBarView.isVisible = true
+//                }
+//            }
+            
+            
+//            sdk.getLaunches(forceReload: forceReload, completionHandler: { launches, error in
+//                if let launches = launches {
+//                    self.launches = .result(launches)
+//                } else {
+//                    self.launches = .error(error?.localizedDescription ?? "error")
+//                }
+//            })
         }
     }
 }

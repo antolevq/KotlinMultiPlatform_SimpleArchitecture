@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jetbrains.handson.androidApp.R
-import com.leva.kmm.shared.domain.model.Result
+import com.leva.kmm.shared.domain.model.Response
+import com.leva.kmm.shared.domain.model.Status
 import com.leva.kmm.shared.domain.usecase.GetRocketListUseCase
 import com.leva.kmm.shared.persistence.DatabaseDriverFactory
 import com.leva.kmm.shared.repository.RocketRespository
@@ -53,15 +54,15 @@ class MainActivity : AppCompatActivity() {
         displayLaunches(false)
 
         viewmodel.getLauncherResult().observe(this, Observer { res ->
-            when (res) {
-                is Result.Success -> {
+            when (res.status) {
+                Status.SUCCESSFUL -> {
                     progressBarView.isVisible = false
-                    launchesRvAdapter.launchEntities = res.data
+                    launchesRvAdapter.launchEntities = res.data!!
                     launchesRvAdapter.notifyDataSetChanged()
                 }
-                is Result.Error -> {
+                Status.ERROR -> {
                     progressBarView.isVisible = false
-                    Toast.makeText(this@MainActivity, res.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, res.errorMessage, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     progressBarView.isVisible = true
